@@ -1,12 +1,15 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from datetime import datetime, timezone
+from prometheus_fastapi_instrumentator import Instrumentator
 import os
 import redis
 import psycopg2
 import json
 
 app = FastAPI(title="StatusPulse", version="1.0.0")
+
+Instrumentator().instrument(app).expose(app)
 
 def get_db_connection():
     return psycopg2.connect(
